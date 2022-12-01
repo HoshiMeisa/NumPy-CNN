@@ -1,82 +1,116 @@
-from PyQt5 import QtCore, QtWidgets
+# Form implementation generated from reading ui file 'imgreconition.ui'
+#
+# Created by: PyQt5 UI code generator 5.12.1
+#
+# WARNING! All changes made in this file will be lost!
+import json
 import sys
 
+import requests
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
 
-# ui界面设置
-class Ui_MainWindow(object):
+import urllib, urllib.request
+import ssl
 
-    def setupUi(self, MainWindow):
-        # 主窗口参数设置
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(848, 721)
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
-        self.centralwidget.setObjectName("centralwidget")
+import base64
 
-        # 设置按键参数
-        self.file = QtWidgets.QPushButton(self.centralwidget)
-        self.file.setGeometry(QtCore.QRect(57, 660, 175, 28))
-        self.file.setObjectName("file")
-        self.file.setStyleSheet("background-color:rgb(111,180,219)")
-        self.file.setStyleSheet(
-            "QPushButton{background-color:rgb(111,180,219)}"  # 按键背景色
-            "QPushButton:hover{color:green}"  # 光标移动到上面后的前景色
-            "QPushButton{border-radius:6px}"  # 圆角半径
-            "QPushButton:pressed{background-color:rgb(180,180,180);border: None;}"  # 按下时的样式
-        )
+# 自己申请到的 图像文字识别 文字识别
+API_KEY = ' '
+SECRET = ' '
 
-        # 设置显示窗口参数
-        self.fileT = QtWidgets.QPushButton(self.centralwidget)
-        self.fileT.setGeometry(QtCore.QRect(300, 660, 480, 28))
-        self.fileT.setObjectName("file")
-        self.fileT.setStyleSheet("background-color:rgb(111,180,219)")
-        self.fileT.setStyleSheet(
-            "QPushButton{background-color:rgb(111,180,219)}"  # 按键背景色
-            "QPushButton:hover{color:green}"  # 光标移动到上面后的前景色
-            "QPushButton{border-radius:6px}"  # 圆角半径
-            "QPushButton:pressed{background-color:rgb(180,180,180);border: None;}"  # 按下时的样式
-        )
-
-        # 主窗口及菜单栏标题栏设置
-        MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 848, 26))
-        self.menubar.setObjectName("menubar")
-        MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
-        self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
-
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
-
-        ################button按钮点击事件回调函数################
-
-        self.file.clicked.connect(self.msg)
-
-    def retranslateUi(self, MainWindow):
-        _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Deecamp_Eurus"))
-        self.file.setText(_translate("MainWindow", "选择要添加的照片"))
-        self.fileT.setText(_translate("MainWindow", ""))
-
-    #########选择图片文件夹#########
-
-    def msg(self, Filepath):
-        m = QtWidgets.QFileDialog.getExistingDirectory(None, "选取文件夹", "C:/")  # 起始路径
-        self.fileT.setText(m)
+# 另外获取token值 图像识别
+P_KEY = '  '
+P_SECRET = '  '
 
 
-#########主函数入口 #########
+class Ui_Form(object):
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(597, 471)
+        self.horizontalLayoutWidget = QtWidgets.QWidget(Form)
+        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(90, 50, 171, 31))
+        self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.label = QtWidgets.QLabel(self.horizontalLayoutWidget)
+        self.label.setObjectName("label")
+        self.horizontalLayout.addWidget(self.label)
+        self.comboBox = QtWidgets.QComboBox(self.horizontalLayoutWidget)
+        self.comboBox.setObjectName("comboBox")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.horizontalLayout.addWidget(self.comboBox)
+        self.horizontalLayoutWidget_2 = QtWidgets.QWidget(Form)
+        self.horizontalLayoutWidget_2.setGeometry(QtCore.QRect(40, 100, 271, 31))
+        self.horizontalLayoutWidget_2.setObjectName("horizontalLayoutWidget_2")
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget_2)
+        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.label_2 = QtWidgets.QLabel(self.horizontalLayoutWidget_2)
+        self.label_2.setObjectName("label_2")
+        self.horizontalLayout_2.addWidget(self.label_2)
+        self.lineEdit = QtWidgets.QLineEdit(self.horizontalLayoutWidget_2)
+        self.lineEdit.setObjectName("lineEdit")
+        self.horizontalLayout_2.addWidget(self.lineEdit)
+        self.pushButton = QtWidgets.QPushButton(self.horizontalLayoutWidget_2)
+        self.pushButton.setObjectName("pushButton")
+        self.horizontalLayout_2.addWidget(self.pushButton)
+        self.label_3 = QtWidgets.QLabel(Form)
+        self.label_3.setGeometry(QtCore.QRect(40, 140, 271, 261))
+        # self.label_3.setStyleSheet("background-color: rgb(255, 255, 127);")
+        self.label_3.setStyleSheet("border-width: 1px;border-style: solid;boder-color: rgb(0,0,0);")
+        self.label_3.setText("")
+        self.label_3.setObjectName("label_3")
+        self.label_4 = QtWidgets.QLabel(Form)
+        self.label_4.setGeometry(QtCore.QRect(330, 50, 241, 321))
+        # self.label_4.setStyleSheet("background-color: rgb(85, 255, 0);")
+        self.label_4.setStyleSheet("border-width: 1px;border-style: solid;boder-color: rgb(0,0,0);")
+        self.label_4.setText("")
+        self.label_4.setObjectName("label_4")
+        self.pushButton_2 = QtWidgets.QPushButton(Form)
+        self.pushButton_2.setGeometry(QtCore.QRect(330, 380, 241, 23))
+        self.pushButton_2.setObjectName("pushButton_2")
 
-if __name__ == '__main__':
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+'''
+1.QFileDialog.getOpenFileName(self.horizontalLayoutWidget_2,"选择要识别的图片","/","Image File(*.jpg *.png)")
+  getOpenFileName返回一个被用户选中的文件的路径，前提是这个文件是存在的。
+  第一个参数parent，用于指定父组件。注意，很多Qt组件的构造函数都会有这么一个parent参数，并提供一个默认值0；
+  第二个参数caption，是对话框的标题；
+  第三个参数dir，是对话框显示时默认打开的目录，"." 代表程序运行目录，"/" 代表当前盘符的根目录(Windows，Linux下/就是根目录了)，也可以是平台相关的，比如"C:\\"等；例如我想打开程序运行目录下的Data文件夹作为默认打开路径，这里应该写成"./Data/"，若想有一个默认选中的文件，则在目录后添加文件名即可："./Data/teaser.graph"
+  第四个参数filter，是对话框的后缀名过滤器，比如我们使用"Image Files(*.jpg *.png)"就让它只能显示后缀名是jpg或者png的文件。如果需要使用多个过滤器，使用";;"分割，比如"JPEG Files(*.jpg);;PNG Files(*.png)"；
+  第五个参数selectedFilter，是默认选择的过滤器；
+  第六个参数options，是对话框的一些参数设定，比如只显示文件夹等等，它的取值是enum QFileDialog::Option，每个选项可以使用 | 运算组合起来。
+  如果我要想选择多个文件怎么办呢？Qt提供了getOpenFileNames()函数，其返回值是一个QStringList。你可以把它理解成一个只能存放QString的List，也就是STL中的list<string>。
+
+2.QPixmap类用于绘图设备的图像显示，它可以作为一个QPaintDevice对象，也可以加载到一个控件中，通常是标签或按钮，用于在标签或按钮上显示图像。
+  QPixmap可以读取的图像文件类型有BMP、GIF、JPG、JPEG、PNG、PBM、PGM、PPM、XBM、XPM等。
+  利用QImage、QPxmap类可以实现图像的显示，并且利用类中的方法可以实现图像的基本操作(缩放、旋转)。
+
+3.QApplication.clipboard()
+
+4.完善运行测试代码，如下：
+'''
+
+if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
-
-    mainWindow = QtWidgets.QMainWindow()
-
-    ui = Ui_MainWindow()
-
-    ui.setupUi(mainWindow)
-
-    mainWindow.show()
-
+    main = QtWidgets.QMainWindow()      # 创建一个主窗体（必须要有一个主窗体）
+    content = SimpleDialogForm()        # 创建对话框
+    content.setupUi(main)               # 将对话框依附于主窗体
+    main.show()                         # 主窗体显示
     sys.exit(app.exec_())
