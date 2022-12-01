@@ -17,7 +17,8 @@ class TRAIN:
         self.save_model_path = save_model_path
         self.dataset = dataset
         self.train_history = defaultdict(list)
-        self.randomlist = np.random.permutation(1680)
+        self.car_randomlist = np.random.permutation(1680)
+        self.scenes_randomlist = np.random.permutation(2800)
 
     def train(self, net_train, Optimizer, epoch):
         self.epoch = epoch
@@ -29,16 +30,16 @@ class TRAIN:
         if self.dataset == 'car':
             batch_number = 840
         elif self.dataset == 'scenes':
-            batch_number = 350
+            batch_number = 1400
         else:
             raise TypeError
 
         j = 0
         for i in tqdm(range(batch_number)):
             if self.dataset == 'car':
-                x, y = load_train_car(j, self.randomlist)
+                x, y = load_train_car(j, self.car_randomlist)
             elif self.dataset == 'scenes':
-                x, y = load_train_scenes(j)
+                x, y = load_train_scenes(j, self.scenes_randomlist)
             j += 2
 
             x /= 255

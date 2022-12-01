@@ -28,12 +28,12 @@ def readlist(filepath, k, randomlist):
     return img2
 
 
-def load_train_scenes(k):
-    minibatch_class1 = read('./dataset/scenes/train/church', k)
-    minibatch_class2 = read('./dataset/scenes/train/desert', k)
-    minibatch_class3 = read('./dataset/scenes/train/ice', k)
-    minibatch_class4 = read('./dataset/scenes/train/lawn', k)
-    minibatch_class5 = read('./dataset/scenes/train/river', k)
+def load_train_scenes(k, randomlist):
+    minibatch_class1 = readlist('./dataset/scenes/train/church', k, randomlist)
+    minibatch_class2 = readlist('./dataset/scenes/train/desert', k, randomlist)
+    minibatch_class3 = readlist('./dataset/scenes/train/ice', k, randomlist)
+    minibatch_class4 = readlist('./dataset/scenes/train/lawn', k, randomlist)
+    minibatch_class5 = readlist('./dataset/scenes/train/river', k, randomlist)
 
     minibatch = np.concatenate((minibatch_class1, minibatch_class2,
                                 minibatch_class3, minibatch_class4,

@@ -1,29 +1,29 @@
-from PIL import Image
+from PIL import Image, ImageFilter
 import numpy as np
 
 # filepath = '/home/kana/LinuxData/CNN/dataset/Car/train/flip+GANO/9'
 # savepath = '/home/kana/LinuxData/CNN/dataset/Car/train/rotate+flip+GANO/9'
 
-x = 'rotate+flip+GABL'
-a = 1120
-b = 3080+280+280+280+280+280+280+280+280+280+280+280+280
-c = b + 140
-for i in range(10):
-    for j in range(140):
-        if i == 9 and j == 56:
-            continue
-        img = Image.open(f'/home/kana/LinuxData/CNN/dataset/Car/train/{x}/{str(i)}' + "/" + str(j+a) + ".jpg", mode='r')
-        img = np.asarray(img)
-        img1 = img.copy()
-        img2 = img.copy()
-
-        img1[:, :, 0] = np.asarray((img1[:, :, 1] / 1.45), dtype=int)
-        img1 = Image.fromarray(img1)
-        img1.save(f'/home/kana/LinuxData/CNN/dataset/Car/train/green_{x}/{str(i)}' + '/' + str(j+b) + ".jpg")
-
-        img2[:, :, 0] = np.asarray((img2[:, :, 2] / 1.45), dtype=int)
-        img2 = Image.fromarray(img2)
-        img2.save(f'/home/kana/LinuxData/CNN/dataset/Car/train/blue_{x}/{str(i)}' + '/' + str(j+c) + ".jpg")
+# x = 'rotate+flip+GABL'
+# a = 0
+# b = 140
+# c = b + 140
+# for i in range(10):
+#     for j in range(140):
+#         if i == 9 and j == 56:
+#             continue
+#         img = Image.open(f'/home/kana/LinuxData/CNN/dataset/Car/train/{x}/{str(i)}' + "/" + str(j+a) + ".jpg", mode='r')
+#         img = np.asarray(img)
+#         img1 = img.copy()
+#         img2 = img.copy()
+#
+#         img1[:, :, 0] = np.asarray((img1[:, :, 1] / 1.45), dtype=int)
+#         img1 = Image.fromarray(img1)
+#         img1.save(f'/home/kana/LinuxData/CNN/dataset/Car/train/green_{x}/{str(i)}' + '/' + str(j+b) + ".jpg")
+#
+#         img2[:, :, 0] = np.asarray((img2[:, :, 2] / 1.45), dtype=int)
+#         img2 = Image.fromarray(img2)
+#         img2.save(f'/home/kana/LinuxData/CNN/dataset/Car/train/blue_{x}/{str(i)}' + '/' + str(j+c) + ".jpg")
 
 
 
@@ -67,14 +67,13 @@ for i in range(10):
 #     # 将噪声范围搞为 0-255
 #     # noise = np.uint8(noise*255)
 #     return gaussian_out, Noise  # 这里也会返回噪声，注意返回值
-# #
-# #
-# for i in range(140):
-#     img = Image.open(filepath + "/" + str(i) + ".jpg", mode='r')
-#     img = np.asarray(img)
-#     img, x = gaussian_noise(img, mean=0, sigma=0.18)
-#     img = Image.fromarray(img)
-#     img.save(savepath + '/' + str(i + 280 + 140 + 140) + ".jpg")
+
+
+for j in range(5):
+    for i in range(700):
+        img = Image.open(f'/home/kana/LinuxData/CNN/dataset/scenes/train/origin/{str(j)}' + "/" + str(i) + ".jpg", mode='r')
+        img = img.transpose(Image.FLIP_LEFT_RIGHT)
+        img.save(f'/home/kana/LinuxData/CNN/dataset/scenes/train/flip/{str(j)}' + '/' + str(i + 1400 + 700) + ".jpg")
 
 # img = np.asarray(img)
 # out, noise = gaussian_noise(img, mean=0, sigma=0.15)
