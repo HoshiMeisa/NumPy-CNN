@@ -77,14 +77,14 @@ if __name__ == "__main__":
     loss_fn = package.CrossEntropyLoss()
     train_net = package.Net(train_layers)
     test_net = package.Net(test_layers)
-    optimizer = optim.Adam(train_net.parameters, 0.00006)
+    optimizer = optim.Adam(train_net.parameters, 0.0001)
 
-    T = TRAIN(loss_fn, 'car', load_model_path='/home/kana/LinuxData/CNN/saved_model/car/train1/model_epoch4.npz',
+    T = TRAIN(loss_fn, 'car', load_model_path='/home/kana/LinuxData/CNN/saved_model/car/train1/model_epoch6.npz',
               save_model_path='/home/kana/LinuxData/CNN/saved_model/car')
     for epoch in range(99999):
         T.train(net_train=train_net, Optimizer=optimizer, epoch=epoch)
         T.vali(net_vali=test_net)
-        plot_acc_loss(T.history())
+        # plot_acc_loss(T.history())
 
     # inf_layers   = [
     #         {'type': 'batchnorm', 'shape': (batch_size, 224, 224, 3), 'affine': False, 'requires_grad': False},

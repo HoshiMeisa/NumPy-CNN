@@ -110,48 +110,4 @@ class TRAIN:
         return self.train_history
 
 
-def inf(inf_net, dataset, filepath):
-    start_time = time.time()
-    x = Image.open(filepath, mode='r').resize((224, 224))
-    x /= 255
-    output = inf_net.forward(x)
-    y = np.argmax(output)
 
-    if dataset == 'car':
-        if y == 0:
-            print("bus")
-        elif y == 1:
-            print("family sedan")
-        elif y == 2:
-            print("fire engine")
-        elif y == 3:
-            print("heavy truck")
-        elif y == 4:
-            print("jeep")
-        elif y == 5:
-            print("minibus")
-        elif y == 6:
-            print("racing car")
-        elif y == 7:
-            print("SUV")
-        elif y == 8:
-            print("taxi")
-        elif y == 9:
-            print("truck")
-    elif dataset == 'scenes':
-        if y == 0:
-            print('church')
-        elif y == 1:
-            print('desert')
-        elif y == 2:
-            print('ice')
-        elif y == 3:
-            print('lawn')
-        elif y == 4:
-            print('river')
-    else:
-        raise TypeError
-
-    print(y)
-    end_time = time.time()
-    print(f"Cost {end_time-start_time}s")

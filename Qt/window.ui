@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>794</width>
-    <height>679</height>
+    <width>1003</width>
+    <height>877</height>
    </rect>
   </property>
   <property name="font">
@@ -22,61 +22,123 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>280</x>
-      <y>10</y>
-      <width>201</width>
+      <x>300</x>
+      <y>0</y>
+      <width>361</width>
       <height>51</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>18</pointsize>
+      <pointsize>14</pointsize>
      </font>
     </property>
     <property name="text">
-     <string>智能分类相册</string>
+     <string>Intelligent Classified Album</string>
     </property>
    </widget>
    <widget class="QGraphicsView" name="graphicsView">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>70</y>
-      <width>651</width>
-      <height>431</height>
+      <x>50</x>
+      <y>50</y>
+      <width>901</width>
+      <height>521</height>
      </rect>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>520</y>
-      <width>108</width>
+      <x>50</x>
+      <y>600</y>
+      <width>171</width>
       <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>选择图片</string>
+     <string>Select Image</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit">
     <property name="geometry">
      <rect>
-      <x>190</x>
-      <y>520</y>
-      <width>531</width>
+      <x>260</x>
+      <y>600</y>
+      <width>691</width>
       <height>41</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_2">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>710</y>
+      <width>691</width>
+      <height>41</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_2">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>710</y>
+      <width>171</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Classify</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_3">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>780</y>
+      <width>901</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>EXIT</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="radioButton">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>660</y>
+      <width>137</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Vehicles</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="radioButton_2">
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>660</y>
+      <width>91</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Scenes</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>90</x>
-      <y>580</y>
-      <width>71</width>
-      <height>41</height>
+      <x>80</x>
+      <y>660</y>
+      <width>121</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="font">
@@ -85,17 +147,7 @@
      </font>
     </property>
     <property name="text">
-     <string>分类结果</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
-    <property name="geometry">
-     <rect>
-      <x>190</x>
-      <y>580</y>
-      <width>531</width>
-      <height>41</height>
-     </rect>
+     <string>Select Class</string>
     </property>
    </widget>
   </widget>
@@ -104,7 +156,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>794</width>
+     <width>1003</width>
      <height>27</height>
     </rect>
    </property>
@@ -112,72 +164,7 @@
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>pushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>Classifier</receiver>
-   <slot>click1()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>136</x>
-     <y>566</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>137</x>
-     <y>700</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>graphicsView</sender>
-   <signal>rubberBandChanged(QRect,QPointF,QPointF)</signal>
-   <receiver>Classifier</receiver>
-   <slot>show_pic()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>354</x>
-     <y>433</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>355</x>
-     <y>661</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lineEdit</sender>
-   <signal>textEdited(QString)</signal>
-   <receiver>Classifier</receiver>
-   <slot>show_path()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>209</x>
-     <y>566</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>41</x>
-     <y>130</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lineEdit_2</sender>
-   <signal>textEdited(QString)</signal>
-   <receiver>Classifier</receiver>
-   <slot>show_result()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>300</x>
-     <y>615</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>295</x>
-     <y>720</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
  <slots>
   <signal>signal1()</signal>
   <slot>click1()</slot>
