@@ -8,7 +8,7 @@ import numpy as np
 
 
 class BatchNorm(Layer):
-    def __init__(self, shape, requires_grad=True, affine=True, is_test=False, **kwargs):
+    def __init__(self, shape, requires_grad=True, affine=True, is_test=False, is_inf=False, **kwargs):
         if affine:
             # 针对输入的归一化不需要仿射变换的参数
             self.gamma = Parameter(np.random.uniform(0.9, 1.1, shape), requires_grad, True)
@@ -22,8 +22,11 @@ class BatchNorm(Layer):
         self.overall_ave = Parameter(np.zeros(shape), requires_grad=False)
         self.gamma_s = None
         self.normalized = None
+        self.is_inf = is_inf
 
     def forward(self, x):
+        if self.is_inf:
+            return x
         if self.is_test:
             # 进行测试时使用估计的训练集的整体方差和均值进行归一化
             sample_ave = self.overall_ave.data

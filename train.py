@@ -11,7 +11,7 @@ class TRAIN:
     def __init__(self, loss_func, dataset, load_model_path=None, save_model_path=None):
         self.sum_loss_train = float(0)
         self.sum_acc_train = float(0)
-        self.epoch = None
+        self.epoch = 0
         self.loss_func = loss_func
         self.load_model_path = load_model_path
         self.save_model_path = save_model_path
@@ -61,8 +61,11 @@ class TRAIN:
         if self.save_model_path is not None:
             save_model(net_train.parameters, f'{str(self.save_model_path)}/model_epoch{str(self.epoch + 1)}.npz')
 
-    def vali(self, net_vali):
-        load_model(net_vali.parameters, f'{str(self.save_model_path)}/model_epoch{str(self.epoch + 1)}.npz')
+    def vali(self, net_vali, load_model_path=None):
+        if load_model_path is not None:
+            load_model(net_vali.parameters, load_model_path)
+        else:
+            load_model(net_vali.parameters, f'{str(self.save_model_path)}/model_epoch{str(self.epoch + 1)}.npz')
         print("Validating:")
 
         if self.dataset == 'car':

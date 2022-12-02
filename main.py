@@ -1,6 +1,6 @@
 import package
 import package.optim as optim
-from train import TRAIN, inf
+from train import TRAIN
 from plot import plot_acc_loss
 
 if __name__ == "__main__":
@@ -82,8 +82,8 @@ if __name__ == "__main__":
     T = TRAIN(loss_fn, 'car', load_model_path='/home/kana/LinuxData/CNN/saved_model/car/train1/model_epoch6.npz',
               save_model_path='/home/kana/LinuxData/CNN/saved_model/car')
     for epoch in range(99999):
-        T.train(net_train=train_net, Optimizer=optimizer, epoch=epoch)
-        T.vali(net_vali=test_net)
+        # T.train(net_train=train_net, Optimizer=optimizer, epoch=epoch)
+        T.vali(net_vali=test_net, load_model_path='/home/kana/LinuxData/CNN/saved_model/car/model_epoch3.npz')
         # plot_acc_loss(T.history())
 
     # inf_layers   = [

@@ -63,6 +63,8 @@ class Net(Layer):
                 self.parameters.append(new_layer.beta)
             self.parameters.append(new_layer.overall_ave)
             self.parameters.append(new_layer.overall_var)
+        elif t == 'batchnorm_inf':
+            new_layer = Batchnorm_Inf()
         else:
             raise TypeError
         return new_layer

@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.QtWidgets import QFileDialog, QGraphicsPixmapItem, QGraphicsScene
 from PIL import Image
-from package import Net
+from package.net import Net
 from package.load_model import load_model
 
 
@@ -87,10 +87,10 @@ class Ui_Classifier(object):
         self.pushButton_3.setText(_translate("Classifier", "EXIT"))
         self.radioButton.setText(_translate("Classifier", "Vehicles"))
         self.radioButton_2.setText(_translate("Classifier", "Scenes"))
-        self.label_2.setText(_translate("Classifier", "Select Class"))
+        self.label_2.setText(_translate("Classifier", "Select Classes"))
 
     def choose_file(self):
-        default_path = '/home/kana/Picture'
+        default_path = '/home/kana/LinuxData/CNN/dataset/Car/test'
         if not os.path.exists(default_path):
             default_path = os.getcwd()
         dlg = QFileDialog(None, "choose_image_file", default_path, 'Image Files(*.png, *.jpg)')
@@ -115,99 +115,117 @@ class Ui_Classifier(object):
             self.reco_class = 'scenes'
 
     def inf(self):
-        # inf_layers = [
-        #     {'type': 'batchnorm', 'shape': (1, 224, 224, 3), 'affine': False, 'requires_grad': False},
-        #
-        #     {'type': 'conv', 'shape': (8, 9, 9, 3), 'requires_grad': False},
-        #     {'type': 'batchnorm', 'shape': (216, 216, 8), 'requires_grad': False},
-        #     {'type': 'relu'},
-        #
-        #     {'type': 'maxpool', 'size': 4},
-        #
-        #     {'type': 'conv', 'shape': (16, 5, 5, 8), 'requires_grad': False},
-        #     {'type': 'batchnorm', 'shape': (50, 50, 16), 'requires_grad': False},
-        #     {'type': 'relu'},
-        #
-        #     {'type': 'maxpool', 'size': 2},
-        #
-        #     {'type': 'conv', 'shape': (32, 6, 6, 16), 'requires_grad': False},
-        #     {'type': 'batchnorm', 'shape': (20, 20, 32), 'requires_grad': False},
-        #     {'type': 'relu'},
-        #
-        #     {'type': 'maxpool', 'size': 2},
-        #
-        #     {'type': 'transform', 'input_shape': (-1, 10, 10, 32), 'output_shape': (-1, 3200)},
-        #
-        #     {'type': 'linear', 'shape': (3200, 64), 'requires_grad': False},
-        #     {'type': 'batchnorm', 'shape': (1, 64), 'requires_grad': False},
-        #     {'type': 'relu'},
-        #
-        #     {'type': 'dropout', 'drop_rate': 0.8, 'is_test': True},
-        #
-        #     {'type': 'linear', 'shape': (64, self.reco_class), 'requires_grad': False},
-        #     {'type': 'batchnorm', 'shape': (1, self.reco_class), 'requires_grad': False},
-        #     {'type': 'relu'},
-        #     {'type': 'softmax'},
-        # ]
-        # inf_net = Net(inf_layers)
-        # if self.reco_class == 'car':
-        #     load_model(inf_net, 'xxx')
-        # elif self.reco_class == 'scenes':
-        #     load_model(inf_net, 'xxx')
-        # else:
-        #     raise TypeError
-        #
-        # filepath = str(self.lineEdit.text())
-        # x = Image.open(filepath, mode='r').resize((224, 224))
-        # x /= 255
-        # start_time = time.time()
-        # y = inf_net.forward(x)
-        # end_time = time.time()
-        # cost_time = end_time - start_time
-        #
-        # if self.reco_class == 'car':
-        #     if y == 0:
-        #         result = "Bus"
-        #     elif y == 1:
-        #         result = "Family Sedan"
-        #     elif y == 2:
-        #         result = "Fire Engine"
-        #     elif y == 3:
-        #         result = "Heavy Truck"
-        #     elif y == 4:
-        #         result = "Jeep"
-        #     elif y == 5:
-        #         result = "Minibus"
-        #     elif y == 6:
-        #         result = "Racing Car"
-        #     elif y == 7:
-        #         result = "SUV"
-        #     elif y == 8:
-        #         result = "Taxi"
-        #     elif y == 9:
-        #         result = "truck"
-        #     else:
-        #         raise IndexError
-        # elif self.reco_class == 'scenes':
-        #     if y == 0:
-        #         result = 'Church'
-        #     elif y == 1:
-        #         result = 'Desert'
-        #     elif y == 2:
-        #         result = 'Ice'
-        #     elif y == 3:
-        #         result = 'Lawn'
-        #     elif y == 4:
-        #         result = 'River'
-        #     else:
-        #         raise IndexError
-        # else:
-        #     raise TypeError
-        #
-        # Probability = np.max(y)
-        result = 'Bus'
-        Probability = 0.9
-        cost_time = 0.01
+        if self.reco_class == 'car':
+            classes = 10
+        elif self.reco_class == 'scenes':
+            classes = 5
+        else:
+            raise TypeError
+
+        inf_layers = [
+            {'type': 'batchnorm', 'shape': (2, 224, 224, 3), 'affine': False, 'is_test': True},
+
+            {'type': 'conv', 'shape': (8, 9, 9, 3)},
+            {'type': 'batchnorm', 'shape': (216, 216, 8), 'is_test': True},
+            {'type': 'relu'},
+
+            {'type': 'maxpool', 'size': 4},
+
+            {'type': 'conv', 'shape': (16, 5, 5, 8)},
+            {'type': 'batchnorm', 'shape': (50, 50, 16), 'is_test': True},
+            {'type': 'relu'},
+
+            {'type': 'maxpool', 'size': 2},
+
+            {'type': 'conv', 'shape': (32, 6, 6, 16)},
+            {'type': 'batchnorm', 'shape': (20, 20, 32), 'is_test': True},
+            {'type': 'relu'},
+
+            {'type': 'maxpool', 'size': 2},
+
+            {'type': 'transform', 'input_shape': (-1, 10, 10, 32), 'output_shape': (-1, 3200)},
+
+            {'type': 'linear', 'shape': (3200, 64)},
+            {'type': 'batchnorm', 'shape': (1, 64), 'is_test': True},
+            {'type': 'relu'},
+
+            {'type': 'dropout', 'drop_rate': 0.8, 'is_test': True},
+
+            {'type': 'linear', 'shape': (64, classes)},
+            {'type': 'batchnorm', 'shape': (2, classes), 'is_test': True},
+            {'type': 'softmax'},
+            {'type': 'batchnorm_inf'}
+        ]
+
+        inf_net = Net(inf_layers)
+
+        if self.reco_class == 'car':
+            load_model(inf_net.parameters, '/home/kana/LinuxData/CNN/saved_model/car/model_epoch3.npz')
+            pass
+        elif self.reco_class == 'scenes':
+            load_model(inf_net.parameters, '/home/kana/LinuxData/CNN/saved_model/scenes/model_epoch6.npz')
+        else:
+            raise TypeError
+
+        filepath = str(self.lineEdit.text())
+        x = Image.open(filepath, mode='r').resize((224, 224))
+        x = np.asarray(x, dtype=float)
+        x = x.copy()
+        x /= 255
+        x = x.reshape(1, 224, 224, 3)
+
+        # z = np.zeros((19, 224, 224, 3))
+        # X = np.concatenate((x, z), axis=0)
+
+        start_time = time.time()
+        output = inf_net.forward(x)
+        y = np.argmax(output)
+        end_time = time.time()
+        cost_time = end_time - start_time
+
+        if self.reco_class == 'car':
+            if y == 0:
+                result = "Bus"
+            elif y == 1:
+                result = "Family Sedan"
+            elif y == 2:
+                result = "Fire Engine"
+            elif y == 3:
+                result = "Heavy Truck"
+            elif y == 4:
+                result = "Jeep"
+            elif y == 5:
+                result = "Minibus"
+            elif y == 6:
+                result = "Racing Car"
+            elif y == 7:
+                result = "SUV"
+            elif y == 8:
+                result = "Taxi"
+            elif y == 9:
+                result = "truck"
+            else:
+                raise IndexError
+        elif self.reco_class == 'scenes':
+            if y == 0:
+                result = 'Church'
+            elif y == 1:
+                result = 'Desert'
+            elif y == 2:
+                result = 'Ice'
+            elif y == 3:
+                result = 'Lawn'
+            elif y == 4:
+                result = 'River'
+            else:
+                raise IndexError
+        else:
+            raise TypeError
+
+        Probability = np.max(output)
+        # result = 'Bus'
+        # Probability = 0.9
+        # cost_time = 0.01
 
         return result, Probability, cost_time
 

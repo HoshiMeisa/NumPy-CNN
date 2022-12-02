@@ -72,3 +72,13 @@ class Tanh(Layer):
 
     def backward(self, eta):
         return np.einsum('...,...,...->...', 1 - self.y, 1 + self.y, eta, optimize=True)
+
+
+class Batchnorm_Inf(Layer):
+    def __init__(self):
+        self.y = None
+    def forward(self, x):
+        return np.mean(x, axis=0)
+
+    def backward(self, eta):
+        return eta

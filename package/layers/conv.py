@@ -2,7 +2,6 @@ from .layer import Layer
 from ..parameter import Parameter
 from functools import reduce
 import numpy as np
-from numba import cuda
 
 
 class Conv(Layer):
