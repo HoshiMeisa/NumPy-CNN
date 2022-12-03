@@ -14,15 +14,7 @@ class Conv(Layer):
         bias: 是否设置偏置
         """
 
-        self.backward_path = None
-        self.b_grad_path = None
-        self.W_grad_path = None
-        self.ow = None
-        self.oh = None
-        self.forward_path = None
-        self.x_split = None
-
-        # 随机初始化W，*表示取字典里的值，如果在后面有读取模型的操作，W的值会被新的值覆盖
+        # 随机初始化W，*表示取字典里的值，如果在后面有读取保存的模型的操作，W和b的值会被读取的模型当中的覆盖
         W = np.random.randn(*shape) * (2 / reduce(lambda x, y: x * y, shape[1:]) ** 0.5)
 
         self.W = Parameter(W, requires_grad)    # 将self.W作为实例保存，其中储存了是否需要计算梯度
@@ -36,6 +28,13 @@ class Conv(Layer):
         self.require_grad = requires_grad
         self.first_forward = True
         self.first_backward = True
+        self.backward_path = None
+        self.b_grad_path = None
+        self.W_grad_path = None
+        self.ow = None
+        self.oh = None
+        self.forward_path = None
+        self.x_split = None
 
     def padding(self, x, forward=True):
         # 根据填充方式以及处于前向过程还是反向过程自动对数据进行填充

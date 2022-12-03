@@ -2,10 +2,6 @@ from abc import ABC
 from .layer import Layer
 import numpy as np
 
-"""
-激活函数，包括ReLu、Leaky_ReLu、Softmax、Sigmoid以及Tanh
-"""
-
 
 class Relu(Layer):
     def __init__(self):
@@ -74,11 +70,13 @@ class Tanh(Layer):
         return np.einsum('...,...,...->...', 1 - self.y, 1 + self.y, eta, optimize=True)
 
 
-class Batchnorm_Inf(Layer):
+class InferMean(Layer):
     def __init__(self):
         self.y = None
+
     def forward(self, x):
-        return np.mean(x, axis=0)
+        self.y = np.mean(x, axis=0)
+        return self.y
 
     def backward(self, eta):
-        return eta
+        raise TypeError('InferMean is just used for inference.')

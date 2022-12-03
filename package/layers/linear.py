@@ -27,7 +27,7 @@ class Linear(Layer):
         return a
 
     def backward(self, eta):
-        # 在反向计算中矩阵乘法涉及转置，einsum比dot稍好一点点
+        # 在反向计算中矩阵乘法涉及转置
         if self.require_grad:
             batch_size = eta.shape[0]
             # 公式：dW_{ik}=\frac {1}{N} \sum_{j}^{C} x_{ji} da_{jk}

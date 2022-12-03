@@ -2,13 +2,9 @@ from .layer import Layer
 from ..parameter import Parameter
 import numpy as np
 
-"""
-批标准化
-"""
-
 
 class BatchNorm(Layer):
-    def __init__(self, shape, requires_grad=True, affine=True, is_test=False, is_inf=False, **kwargs):
+    def __init__(self, shape, requires_grad=True, affine=True, is_test=False, **kwargs):
         if affine:
             # 针对输入的归一化不需要仿射变换的参数
             self.gamma = Parameter(np.random.uniform(0.9, 1.1, shape), requires_grad, True)
@@ -22,11 +18,8 @@ class BatchNorm(Layer):
         self.overall_ave = Parameter(np.zeros(shape), requires_grad=False)
         self.gamma_s = None
         self.normalized = None
-        self.is_inf = is_inf
 
     def forward(self, x):
-        if self.is_inf:
-            return x
         if self.is_test:
             # 进行测试时使用估计的训练集的整体方差和均值进行归一化
             sample_ave = self.overall_ave.data
@@ -41,16 +34,15 @@ class BatchNorm(Layer):
         return (x - sample_ave) / sample_std if not self.affine else self.forward_internal(x - sample_ave, sample_std)
 
     def backward(self, eta):
+        # 如果是针对输入层做归一化就不存在向上传播梯度了
         if not self.affine:
-            return  # 如果是针对输入层做归一化就不存在向上传播梯度了
+            return
         self.beta.grad = eta.mean(axis=0)
         self.gamma.grad = (eta * self.normalized).mean(axis=0)
         return self.gamma_s * (eta - self.normalized * self.gamma.grad - self.beta.grad)
 
     def forward_internal(self, sample_diff, sample_std):
-        """
-        如果是在网络内部使用Batch Norm需要进一步进行仿射变化，如果是对输入进行归一化就不用了
-        """
+        # 如果是在网络内部使用BatchNorm需要进一步进行仿射变化，如果是对输入进行归一化就不用了
         self.normalized = sample_diff / sample_std
         self.gamma_s = self.gamma.data / sample_std
         return self.gamma.data * self.normalized + self.beta.data

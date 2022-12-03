@@ -5,10 +5,13 @@ import numpy as np
 # 随机失活
 class Dropout(Layer):
     def __init__(self, drop_rate, is_test=False, **kwargs):
-        '''
+        """
         drop_rate: 失活概率
         is_test: 是否为测试状态
-        '''
+        """
+        self.backward_path = None
+        self.forward_path = None
+        self.mask = None
         self.drop_rate = drop_rate
         self.fix_value = 1 / (1 - drop_rate)    # 修正值，使forward输出整体期望保持不变
         self.is_test = is_test
