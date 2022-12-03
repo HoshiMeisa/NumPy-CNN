@@ -160,7 +160,7 @@ class Ui_Classifier(object):
         inf_net = Net(inf_layers)
 
         if self.reco_class == 'car':
-            load_model(inf_net.parameters, '/home/kana/LinuxData/CNN/saved_model/car/model_epoch3.npz')
+            load_model(inf_net.parameters, '/home/kana/LinuxData/CNN/saved_model/car/train1/model_epoch6.npz')
             pass
         elif self.reco_class == 'scenes':
             load_model(inf_net.parameters, '/home/kana/LinuxData/CNN/saved_model/scenes/model_epoch6.npz')
