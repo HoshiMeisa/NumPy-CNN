@@ -157,17 +157,10 @@ class Ui_Classifier(object):
         elif self.reco_class == 'scenes':
             load_model(inf_net.parameters, '/home/kana/LinuxData/CNN/saved_model/scenes/model_epoch6.npz')
         else:
-            raise TypeError
+            raise TypeError('Incorrect class selected.')
 
-        filepath = str(self.lineEdit.text())
-        x = Image.open(filepath, mode='r').resize((224, 224))
-        x = np.asarray(x, dtype=float)
-        x = x.copy()
-        x /= 255
-        x = x.reshape(1, 224, 224, 3)
-
-        # z = np.zeros((19, 224, 224, 3))
-        # X = np.concatenate((x, z), axis=0)
+        x = Image.open(str(self.lineEdit.text()), mode='r').resize((224, 224))
+        x = (np.asarray(x, dtype=float).copy() / 255).reshape(1, 224, 224, 3)
 
         start_time = time.time()
         output = inf_net.forward(x)
@@ -198,7 +191,7 @@ class Ui_Classifier(object):
             elif y == 9:
                 result = "truck"
             else:
-                raise IndexError('Output shape is incorrect.')
+                raise IndexError('Output label is incorrect.')
         elif self.reco_class == 'scenes':
             if y == 0:
                 result = 'Church'
@@ -211,7 +204,7 @@ class Ui_Classifier(object):
             elif y == 4:
                 result = 'River'
             else:
-                raise IndexError('Output shape is incorrect.')
+                raise IndexError('Output label is incorrect.')
         else:
             raise TypeError('Incorrect class selected.')
 

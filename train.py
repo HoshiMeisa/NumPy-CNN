@@ -26,6 +26,7 @@ class TRAIN:
 
         if self.load_model_path is not None:
             load_model(net_train.parameters, self.load_model_path)
+            self.load_model_path = None
 
         if self.dataset == 'car':
             batch_number = 840

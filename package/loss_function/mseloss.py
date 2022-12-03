@@ -1,7 +1,5 @@
 import numpy as np
 
-# 均方误差损失函数
-
 
 class MSELoss(object):
     def gradient(self):

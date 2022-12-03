@@ -79,7 +79,7 @@ if __name__ == "__main__":
     test_net = package.Net(test_layers)
     optimizer = optim.Adam(train_net.parameters, 0.0003)
 
-    T = TRAIN(loss_fn, 'car', load_model_path='/home/kana/LinuxData/CNN/saved_model/car/train2/model_epoch5.npz' ,save_model_path='/home/kana/LinuxData/CNN/saved_model/car')
+    T = TRAIN(loss_fn, 'car', load_model_path='/home/kana/LinuxData/CNN/saved_model/car/train2/model_epoch6.npz' ,save_model_path='/home/kana/LinuxData/CNN/saved_model/car')
     for epoch in range(99999):
         T.train(net_train=train_net, Optimizer=optimizer, epoch=epoch)
         T.vali(net_vali=test_net)

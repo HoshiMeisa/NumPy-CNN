@@ -19,7 +19,7 @@ class CrossEntropyLoss(object):
         return: 该批样本的平均损失[, 正确率]
 
         输出与真值的shape是一样的，并且都是批量的，单个输出与真值是一维向量
-        a.shape = y.shape = (N, C)      N是该批样本的数量，C是单个样本最终输出向量的长度
+        a.shape = y.shape = (N, C), N是该批样本的数量，C是单个样本最终输出向量的长度
         """
         # 网络的输出没有经过softmax分类，而在交叉熵损失函数中进行
         # 得出softmax的分类结果

@@ -1,7 +1,7 @@
 import sys
 from functools import partial
 from PyQt5.QtWidgets import QApplication, QMainWindow
-from main_Window import Ui_Classifier
+from GUI_Window import Ui_Classifier
 
 
 if __name__ == '__main__':
