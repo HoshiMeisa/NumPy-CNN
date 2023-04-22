@@ -1,4 +1,4 @@
-# ImageClassification-CNN
+# ImageClassification-NumPyCNN
 
 [English](https://github.com/KanaMeisa/ImageClassifier-CNN/blob/master/README.md)
 
