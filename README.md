@@ -16,4 +16,5 @@ Database2: Scenes
 
 
 GUI
-![GUI](https://github.com/KanaMeisa/ImageClassification-NumPyCNN/blob/master/.idea/GUI.jpg)
+
+<img src="https://github.com/KanaMeisa/ImageClassification-NumPyCNN/blob/master/.idea/GUI.jpg" style="width:50%;height:50%;" />
