@@ -2,9 +2,7 @@ from tqdm import tqdm
 from collections import defaultdict
 from package.load_model import load_model, save_model
 from package.load_dataset import load_train_car, load_train_scenes, load_vali_car, load_vali_scenes
-from PIL import Image
 import numpy as np
-import time
 
 
 class TRAIN:
@@ -31,7 +29,7 @@ class TRAIN:
         if self.dataset == 'car':
             batch_number = 840
         elif self.dataset == 'scenes':
-            batch_number = 1400
+            batch_number = 25
         else:
             raise TypeError
 
@@ -112,6 +110,3 @@ class TRAIN:
 
     def history(self):
         return self.train_history
-
-
-

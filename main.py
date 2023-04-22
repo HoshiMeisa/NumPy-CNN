@@ -4,8 +4,8 @@ from train import TRAIN
 from plot import plot_acc_loss
 
 if __name__ == "__main__":
-    batch_size = 20
-    classes = 10
+    batch_size = 10
+    classes = 5
 
     train_layers = [
         {'type': 'batchnorm', 'shape': (batch_size, 224, 224, 3), 'affine': False},
@@ -40,7 +40,8 @@ if __name__ == "__main__":
         {'type': 'batchnorm', 'shape': (batch_size, classes)},
         {'type': 'relu'},
     ]
-    test_layers  = [
+
+    test_layers = [
         {'type': 'batchnorm', 'shape': (batch_size, 224, 224, 3), 'affine': False},
 
         {'type': 'conv', 'shape': (8, 9, 9, 3)},
@@ -79,8 +80,9 @@ if __name__ == "__main__":
     test_net = package.Net(test_layers)
     optimizer = optim.Adam(train_net.parameters, 0.0003)
 
-    T = TRAIN(loss_fn, 'car', load_model_path='/home/kana/LinuxData/CNN/saved_model/car/train2/model_epoch6.npz' ,save_model_path='/home/kana/LinuxData/CNN/saved_model/car')
+    T = TRAIN(loss_fn, 'scenes',
+              save_model_path='/home/kana/LinuxData/CNN/saved_model/scenes/new')
     for epoch in range(99999):
         T.train(net_train=train_net, Optimizer=optimizer, epoch=epoch)
         T.vali(net_vali=test_net)
-        # plot_acc_loss(T.history())
+        plot_acc_loss(T.history())

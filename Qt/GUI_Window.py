@@ -82,10 +82,10 @@ class Ui_Classifier(object):
         self.label_2.setText(_translate("Classifier", "Select Class"))
 
     def choose_file(self):
-        default_path = '/home/kana/LinuxData/CNN/dataset/Car/test'
+        default_path = '/home/kana/Picture'
         if not os.path.exists(default_path):
             default_path = os.getcwd()
-        dlg = QFileDialog(None, "choose_image_file", default_path, 'Image Files(*.png, *.jpg)')
+        dlg = QFileDialog(None, "choose_image_file", default_path, 'Image Files(*.png *.jpg *.jpeg)')
         dlg.setFileMode(QFileDialog.AnyFile)
         if dlg.exec_():
             selected_name = dlg.selectedFiles()[0]
@@ -152,10 +152,10 @@ class Ui_Classifier(object):
         inf_net = Net(inf_layers)
 
         if self.reco_class == 'car':
-            load_model(inf_net.parameters, '/home/kana/LinuxData/CNN/saved_model/car/train1/model_epoch6.npz')
+            load_model(inf_net.parameters, '/home/kana/Huilanbei/CNN/saved_model/car/new/model_epoch4.npz')
             pass
         elif self.reco_class == 'scenes':
-            load_model(inf_net.parameters, '/home/kana/LinuxData/CNN/saved_model/scenes/model_epoch6.npz')
+            load_model(inf_net.parameters, '/home/kana/Huilanbei/CNN/saved_model/scenes/train1/model_epoch2.npz')
         else:
             raise TypeError('Incorrect class selected.')
 

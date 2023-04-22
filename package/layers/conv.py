@@ -47,10 +47,6 @@ class Conv(Layer):
     def split_by_strides(self, x):
         """
         将数据按卷积步长划分为与卷积核相同大小的子集,当不能被步长整除时，不会发生越界，但是会有一部分信息数据不会被使用
-        Args:
-            x:
-
-        Returns:
         """
         # 计算输出矩阵大小
         N, H, W, C = x.shape

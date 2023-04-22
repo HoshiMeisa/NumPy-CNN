@@ -29,11 +29,11 @@ def readlist(filepath, k, randomlist):
 
 
 def load_train_scenes(k, randomlist):
-    minibatch_class1 = readlist('./dataset/scenes/train/church', k, randomlist)
-    minibatch_class2 = readlist('./dataset/scenes/train/desert', k, randomlist)
-    minibatch_class3 = readlist('./dataset/scenes/train/ice', k, randomlist)
-    minibatch_class4 = readlist('./dataset/scenes/train/lawn', k, randomlist)
-    minibatch_class5 = readlist('./dataset/scenes/train/river', k, randomlist)
+    minibatch_class1 = readlist('./dataset/scenes/mix_train/0', k, randomlist)
+    minibatch_class2 = readlist('./dataset/scenes/mix_train/1', k, randomlist)
+    minibatch_class3 = readlist('./dataset/scenes/mix_train/2', k, randomlist)
+    minibatch_class4 = readlist('./dataset/scenes/mix_train/3', k, randomlist)
+    minibatch_class5 = readlist('./dataset/scenes/mix_train/4', k, randomlist)
 
     minibatch = np.concatenate((minibatch_class1, minibatch_class2,
                                 minibatch_class3, minibatch_class4,
@@ -154,6 +154,54 @@ def load_vali_car(k):
                                 minibatch_class5, minibatch_class6,
                                 minibatch_class7, minibatch_class8,
                                 minibatch_class9, minibatch_class10), axis=0)
+
+    minibatch_label = np.zeros((20, 10))
+
+    for i in range(2):
+        minibatch_label[i, 0] = 1
+    for i in range(2, 4):
+        minibatch_label[i, 1] = 1
+    for i in range(4, 6):
+        minibatch_label[i, 2] = 1
+    for i in range(6, 8):
+        minibatch_label[i, 3] = 1
+    for i in range(8, 10):
+        minibatch_label[i, 4] = 1
+    for i in range(10, 12):
+        minibatch_label[i, 5] = 1
+    for i in range(12, 14):
+        minibatch_label[i, 6] = 1
+    for i in range(14, 16):
+        minibatch_label[i, 7] = 1
+    for i in range(16, 18):
+        minibatch_label[i, 8] = 1
+    for i in range(18, 20):
+        minibatch_label[i, 9] = 1
+
+    random = np.random.permutation(20)
+    minibatch = minibatch[random]
+    minibatch_label = minibatch_label[random]
+
+    return minibatch, minibatch_label
+
+
+def load_new(k):
+    minibatch_class1 = read('./dataset/Car/class/0', k)
+    minibatch_class2 = read('./dataset/Car/class/1', k)
+    minibatch_class3 = read('./dataset/Car/class/2', k)
+    minibatch_class4 = read('./dataset/Car/class/3', k)
+    minibatch_class5 = read('./dataset/Car/class/4', k)
+    minibatch_class6 = read('./dataset/Car/class/5', k)
+    minibatch_class7 = read('./dataset/Car/class/6', k)
+    minibatch_class8 = read('./dataset/Car/class/7', k)
+    minibatch_class9 = read('./dataset/Car/class/8', k)
+    minibatch_class0 = read('./dataset/Car/class/9', k)
+
+    minibatch = np.concatenate((minibatch_class1, minibatch_class2,
+                                minibatch_class3, minibatch_class4,
+                                minibatch_class5, minibatch_class6,
+                                minibatch_class7, minibatch_class8,
+                                minibatch_class9, minibatch_class0,), axis=0)
 
     minibatch_label = np.zeros((20, 10))
 
