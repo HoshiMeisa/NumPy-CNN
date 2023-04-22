@@ -1,4 +1,4 @@
-# ImageClassifier-CNN
+# ImageClassification-CNN
 
 [English](https://github.com/KanaMeisa/ImageClassifier-CNN/blob/master/README.md)
 
