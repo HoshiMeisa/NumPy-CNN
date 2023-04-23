@@ -3,7 +3,11 @@ from abc import ABCMeta, abstractmethod
 
 class Layer(metaclass=ABCMeta):
     """
-    作为所有层的基类，如果自定义新的层应该从此类继承并重写下面两个方法
+    As a base class for all layers, if you want to define a new layer, you should inherit from this class and override
+    the following two methods
+
+    すべてのレイヤーの基本クラスとして、新しいレイヤーを定義する場合は、このクラスから継承し、
+    以下の2つのメソッドをオーバーライドする必要があります
     """
     @abstractmethod
     def forward(self, *args):

@@ -8,9 +8,6 @@ from package.load_model import load_model, save_model
 from plot import plot_acc_loss
 
 
-
-
-
 batch_size = 20
 classes = 10
 

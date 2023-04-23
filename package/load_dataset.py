@@ -3,9 +3,6 @@ from PIL import Image
 
 
 def read(filepath, k):
-    """
-    参数：图片文件路径, k
-    """
     img2 = np.zeros((2, 224, 224, 3))
     j = 0
     for i in range(k, k + 2):
@@ -16,9 +13,6 @@ def read(filepath, k):
 
 
 def readlist(filepath, k, randomlist):
-    """
-    参数：图片文件路径, k
-    """
     img2 = np.zeros((2, 224, 224, 3))
     j = 0
     for i in range(k, k + 2):

@@ -2,10 +2,12 @@ from package.layers.activation import Softmax
 import numpy as np
 
 
-# 交叉熵损失函数
+# Cross-entropy loss function
+# クロスエントロピー損失関数
 class CrossEntropyLoss(object):
     def __init__(self):
-        # 内置一个softmax作为分类器
+        # Include a softmax as the classifier
+        # 分類器としてsoftmaxを組み込む
         self.classifier = Softmax()
 
     def gradient(self):
@@ -13,22 +15,34 @@ class CrossEntropyLoss(object):
 
     def __call__(self, a, y, requires_acc=True):
         """
-        a: 批量的样本输出
-        y: 批量的样本真值
-        requires_acc: 是否输出正确率
-        return: 该批样本的平均损失[, 正确率]
+        a: batch of sample outputs
+        y: batch of sample ground truth values
+        requires_acc: whether to output accuracy
+        return: the average loss of the batch of samples[, accuracy]
 
-        输出与真值的shape是一样的，并且都是批量的，单个输出与真值是一维向量
-        a.shape = y.shape = (N, C), N是该批样本的数量，C是单个样本最终输出向量的长度
+        The shapes of the output and ground truth values are the same, both in batch, and a single output or ground truth value is a one-dimensional vector.
+        a.shape = y.shape = (N, C), where N is the number of samples in the batch and C is the length of the final output vector for a single sample.
+
+
+        a: バッチのサンプル出力
+        y: バッチのサンプル正解値
+        requires_acc: 正解率を出力するかどうか
+        return: そのバッチの平均損失[, 正解率]
+
+        出力と正解値のshapeは同じで、どちらもバッチであり、単一の出力または正解値は一次元ベクトルです。
+        a.shape = y.shape = (N, C)、ここでNはバッチ中のサンプル数、Cは単一のサンプルの最終出力ベクトルの長さです。
         """
-        # 网络的输出没有经过softmax分类，而在交叉熵损失函数中进行
-        # 得出softmax的分类结果
+        # The network's output is not passed through a softmax classification, but rather through the cross-entropy loss function to obtain the softmax classification result.
+        # ネットワークの出力はsoftmax分類を通過せず、代わりに交差エントロピー損失関数を通じてsoftmax分類結果を取得します
         a = self.classifier.forward(a)
-        # 提前计算好梯度
+        # Precompute gradients
+        # 勾配の事前計算
         self.grad = a - y
-        # 样本整体损失
+        # Total loss of samples
+        # サンプル全体の損失
         # L_{i}=-\sum_{j}^{C} y_{ij} \ln a_{ij}
-        # 样本的平均损失
+        # Average loss of samples
+        # サンプルの平均損失
         # L_{mean}=\frac{1}{N} \sum_{i}^{N} L_{i}=-\frac{1}{N} \sum_{i}^{N} \sum_{j}^{C} y_{ij} \ln a_{ij}
         loss = -1 * np.einsum('ij,ij->', y, np.log(a), optimize=True) / y.shape[0]
         if requires_acc:

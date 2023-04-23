@@ -2,12 +2,13 @@ from .layer import Layer
 import numpy as np
 
 
-# 以边界的元素为对称轴，对数据进行镜像填充，填充只发生在宽(W)高(H)两个维度上
+# Mirror-padding is performed on the data using the elements on the boundary as the axis of symmetry,
+# and padding only occurs in the two dimensions of width (W) and height (H)
 
+# データに対して、境界の要素を対称軸としてミラーパディングを行い、幅（W）と高さ（H）の2つの次元にのみパディングが行われます
 
 class ReflectionPad(Layer):
     def __init__(self, pad_width, **kwargs):
-        # pad_width: 填充的宽度
         self.top = self.bottom = self.left = self.right = pad_width
 
     def forward(self, x):

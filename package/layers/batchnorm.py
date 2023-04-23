@@ -6,7 +6,8 @@ import numpy as np
 class BatchNorm(Layer):
     def __init__(self, shape, requires_grad=True, affine=True, is_test=False, **kwargs):
         if affine:
-            # 针对输入的归一化不需要仿射变换的参数
+            # Parameters for input normalization without the need for affine transformation
+            # アフィン変換の必要性がない入力正規化用パラメーター
             self.gamma = Parameter(np.random.uniform(0.9, 1.1, shape), requires_grad, True)
             self.beta = Parameter(np.random.uniform(-0.1, 0.1, shape), requires_grad, True)
             self.requires_grad = requires_grad
@@ -21,11 +22,14 @@ class BatchNorm(Layer):
 
     def forward(self, x):
         if self.is_test:
-            # 进行测试时使用估计的训练集的整体方差和均值进行归一化
+            # Normalize using the estimated overall variance and mean of the training set during testing
+            # テスト時には、トレーニングセットの推定全体の分散と平均を使用して正規化を行います
             sample_ave = self.overall_ave.data
             sample_std = np.sqrt(self.overall_var.data)
         else:
-            # 进行训练时使用样本的均值和方差对训练集整体的均值和方差进行估计（使用加权平均的方法）
+            # During training, the mean and variance of the samples are used to estimate the mean and
+            # variance of the entire training set using a weighted average.
+            # 学習中に、サンプルの平均値と分散を使用して、加重平均法を用いてトレーニングセット全体の平均値と分散を推定します
             sample_ave = x.mean(axis=0)
             sample_var = x.var(axis=0)
             sample_std = np.sqrt(sample_var + self.eps)
@@ -34,7 +38,8 @@ class BatchNorm(Layer):
         return (x - sample_ave) / sample_std if not self.affine else self.forward_internal(x - sample_ave, sample_std)
 
     def backward(self, eta):
-        # 如果是针对输入层做归一化就不存在向上传播梯度了
+        # If normalization is performed on the input layer, there will be no gradient propagation
+        # 入力層に対して正規化を行う場合、逆伝播される勾配は存在しません
         if not self.affine:
             return
         self.beta.grad = eta.mean(axis=0)
@@ -42,7 +47,9 @@ class BatchNorm(Layer):
         return self.gamma_s * (eta - self.normalized * self.gamma.grad - self.beta.grad)
 
     def forward_internal(self, sample_diff, sample_std):
-        # 如果是在网络内部使用BatchNorm需要进一步进行仿射变化，如果是对输入进行归一化就不用了
+        # If BatchNorm is used within the network, further affine transformation is necessary
+        # If normalization is applied to the input, it is not needed
+        # ネットワーク内でBatchNormを使用する場合は、さらにアフィン変換が必要です。入力に正規化を適用する場合は、必要ありません
         self.normalized = sample_diff / sample_std
         self.gamma_s = self.gamma.data / sample_std
         return self.gamma.data * self.normalized + self.beta.data

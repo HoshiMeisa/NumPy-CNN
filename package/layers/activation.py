@@ -1,7 +1,6 @@
 from abc import ABC
 from .layer import Layer
 import numpy as np
-##12
 
 class Relu(Layer):
     def __init__(self):
@@ -34,13 +33,15 @@ class Softmax(Layer):
     def forward(self, x):
         """
         x.shape = (N, C)
-        接收批量的输入，每个输入是一维向量
+        Receive batch input, where each input is a one-dimensional vector
+        batch入力を受け取り、各入力が一次元ベクトルであることを確認します
         """
         v = np.exp(x)
         return v / v.sum(axis=-1, keepdims=True)
     
     def backward(self, y):
-        # Softmax的反向传播在交叉熵损失函数中
+        # The backpropagation of Softmax is in the cross-entropy loss function.
+        # Softmaxの逆伝搬は、クロスエントロピー損失関数にあります。
         pass
 
 

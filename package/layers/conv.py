@@ -8,22 +8,32 @@ class Conv(Layer):
     def __init__(self, shape, method='VALID', stride=1, requires_grad=True, bias=True, **kwargs):
         """
         shape: (out_channel, kernel_size, kernel_size, in_channel)
-        method: 填充方式可选值有{'VALID', 'SAME'}
-        stride: 卷积步长
-        requires_grad: 是否在反向传播中计算权重梯度
-        bias: 是否设置偏置
+        method: The available options for padding are {'VALID', 'SAME'}.
+        stride: Convolution stride.
+        requires_grad: Whether to compute weight gradients during backpropagation.
+        bias: Whether to include bias.
+
+        shape: (out_channel, kernel_size, kernel_size, in_channel)
+        method: パディングに使用できるオプションには{'VALID'、 'SAME'}があります。
+        stride: 畳み込みストライド。
+        requires_grad: 逆伝播中に重みの勾配を計算するかどうか。
+        bias: バイアスを含めるかどうか。
         """
 
-        # 随机初始化W，*表示取字典里的值，如果在后面有读取保存的模型的操作，W和b的值会被读取的模型当中的覆盖
+        # Randomly initialize W, * indicates taking values from the dictionary. If there are operations to read
+        # the saved model later, the values of W and b will be overwritten by the saved model
+        # をランダムに初期化し、*は辞書から値を取得することを示します。後で保存されたモデルを読み込む操作がある場合、
+        # Wとbの値は保存されたモデルによって上書きされます
         W = np.random.randn(*shape) * (2 / reduce(lambda x, y: x * y, shape[1:]) ** 0.5)
 
         self.W = Parameter(W, requires_grad)    # 将self.W作为实例保存，其中储存了是否需要计算梯度
         self.b = Parameter(np.zeros(shape[0]), requires_grad) if bias else None
 
-        # 存取其他数据
+        # Access other data
+        # 他のデータにアクセスする
         self.method = method
         self.s = stride
-        self.kn = shape[0]  # 卷积核数量，等于输出通道数
+        self.kn = shape[0]  # 畳み込みカーネルの数
         self.ksize = shape[1]
         self.require_grad = requires_grad
         self.first_forward = True
@@ -37,7 +47,8 @@ class Conv(Layer):
         self.x_split = None
 
     def padding(self, x, forward=True):
-        # 根据填充方式以及处于前向过程还是反向过程自动对数据进行填充
+        # Automatically pad data based on the padding method and whether it is in the forward or backward process
+        # パディングの方法と前方向プロセスか後方向プロセスかに応じて、データを自動的にパディングします
         p = self.ksize // 2 if self.method == 'SAME' else self.ksize - 1
         if forward:
             return x if self.method == 'VALID' else np.pad(x, ((0, 0), (p, p), (p, p), (0, 0)), 'constant')
@@ -46,9 +57,15 @@ class Conv(Layer):
 
     def split_by_strides(self, x):
         """
-        将数据按卷积步长划分为与卷积核相同大小的子集,当不能被步长整除时，不会发生越界，但是会有一部分信息数据不会被使用
+        Divide the data into subsets of the same size as the convolutional kernel according to the convolutional stride.
+        When it is not divisible by the stride, there will be no out-of-bounds error, but some information data
+        will not be used
+
+        データを畳み込みストライドに従ってカーネルと同じサイズのサブセットに分割します。ストライドで割り切れない場合は、
+        オーバーフローエラーは発生しませんが、一部の情報データは使用されません
         """
-        # 计算输出矩阵大小
+        # Compute the output matrix size
+        # 出力行列のサイズを計算する
         N, H, W, C = x.shape
         oh = (H - self.ksize) // self.s + 1
         ow = (W - self.ksize) // self.s + 1
@@ -59,12 +76,16 @@ class Conv(Layer):
     def forward(self, x):
         x = self.padding(x)
         if self.s > 1:
-            # 如果卷积的步长大于1，需要计算出步长为1时输出数据的宽、高，以便在反向过程中对传入的梯度进行还原
+            # If the stride of convolution is greater than 1, it is necessary to calculate the width and height of the
+            # output data with stride 1 in order to restore the incoming gradient during the backpropagation process
+            # 畳み込みのストライドが1より大きい場合、逆伝播の過程で入力された勾配を復元するために、
+            # ストライド1の出力データの幅と高さを計算する必要があります
             self.oh = x.shape[1] - self.ksize + 1
             self.ow = x.shape[2] - self.ksize + 1
         self.x_split = self.split_by_strides(x)
         if self.first_forward:
-            # 在第一次训练时计算优化路径
+            # Calculate optimization path during first training
+            # 最初のトレーニング時に最適化パスを計算します
             self.first_forward = False
             self.forward_path = np.einsum_path('ijk...,o...->ijko', self.x_split, self.W.data, optimize='greedy')[0]
         a = np.einsum('ijk...,o...->ijko', self.x_split, self.W.data, optimize=self.forward_path)
@@ -73,7 +94,8 @@ class Conv(Layer):
     def backward(self, eta):
         if self.require_grad:
             if self.first_backward:
-                # 在第一次训练时计算优化路径
+                # Calculate optimization path during first training
+                # 最初のトレーニング時に最適化パスを計算します
                 self.W_grad_path = np.einsum_path('...i,...jkl->ijkl', eta, self.x_split, optimize='greedy')[0]
                 self.b_grad_path = np.einsum_path('...i->i', eta, optimize='greedy')[0]
             self.W.grad = np.einsum('...i,...jkl->ijkl', eta, self.x_split, optimize=self.W_grad_path) / eta.shape[0]
@@ -86,7 +108,8 @@ class Conv(Layer):
             eta = temp
 
         if self.first_backward:
-            # 在第一次训练时计算优化路径
+            # Calculate optimization path during first training
+            # 最初のトレーニング時に最適化パスを計算します
             self.first_backward = False
             self.backward_path = np.einsum_path('ijklmn,nlmo->ijko', self.split_by_strides(self.padding(eta, False)),
                                                 self.W.data[:, ::-1, ::-1, :], optimize='greedy')[0]

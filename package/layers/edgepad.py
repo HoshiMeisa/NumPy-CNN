@@ -2,12 +2,14 @@ from .layer import Layer
 import numpy as np
 
 
-# 使用边界元素的值对数据进行填充，填充只发生在宽(W)高(H)两个维度上
+# Padding is applied to the data using the values of boundary elements, and the padding only occurs in the
+# width (W) and height (H) dimensions
 
+# 境界要素の値を使ってデータにパディングを適用し、パディングは幅（W）と高さ（H）の次元にのみ発生します
 
 class EdgePad(Layer):
     def __init__(self, pad_width, **kwargs):
-        # pad_width: 填充的宽度
+        # pad_width: Padding width
         self.top = self.bottom = self.left = self.right = pad_width
 
     def forward(self, x):

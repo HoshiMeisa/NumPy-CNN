@@ -1,6 +1,7 @@
 from .layer import Layer
 
-# 在常规卷积网络中因为有线性层，所以需要将数据进行变形
+# In regular convolutional networks, data needs to be reshaped due to the presence of linear layers
+# 通常の畳み込みニューラルネットワークでは、線形層が存在するため、データを再形成する必要があります
 
 
 class Transform(Layer):
