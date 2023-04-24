@@ -1,4 +1,4 @@
-# 画像分類-NumPyCNN
+# 画像分類 NumPyCNN
 
 [English](https://github.com/KanaMeisa/ImageClassifier-CNN/blob/master/README.md)
 
