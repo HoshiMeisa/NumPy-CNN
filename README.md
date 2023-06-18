@@ -1,6 +1,6 @@
 # Image Classification CNN with NumPy
 
-[日本語](https://github.com/KanaMeisa/ImageClassifier-CNN/blob/master/READMEJP.md)
+[日本語](./README_JP.md)
 
 This is my assessment piece, a Convolutional Neural Network (CNN) constructed utilizing NumPy, accompanied by a Graphical User Interface (GUI) implemented through PyQt. The highlight and challenge of this project lie in the fact that the entire CNN is developed using NumPy, without reliance on any deep learning frameworks(PyTorch, TensorFlow, and so on). 
 
