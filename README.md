@@ -7,16 +7,16 @@ The program employs a CNN built with NumPy, realizing a compact neural network f
 
 ## CNN Framework
 
-![Framework](./.idea/framework.jpg)
+![Framework](./.data/framework.jpg)
 
 ## Database1: Vehicles
 
-![Database1](./.idea/training_history1.png)
+![Database1](./.data/training_history1.png)
 
 ## Database2: Scenes
 
-![Database2](./.idea/training_history2.png)
+![Database2](./.data/training_history2.png)
 
 ## GUI
 
-<img src="./.idea/GUI.jpg" style="width:50%;height:50%;" />
+<img src="./.data/GUI.jpg" style="width:50%;height:50%;" />
