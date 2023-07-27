@@ -1,0 +1,122 @@
+train_layers:
+  - type: batchnorm
+    shape: [10, 224, 224, 3]
+    affine: False
+
+  - type: conv
+    shape: [8, 9, 9, 3]
+
+  - type: batchnorm
+    shape: [216, 216, 8]
+
+  - type: relu
+
+  - type: maxpool
+    size: 4
+
+  - type: conv
+    shape: [16, 5, 5, 8]
+
+  - type: batchnorm
+    shape: [50, 50, 16]
+
+  - type: relu
+
+  - type: maxpool
+    size: 2
+
+  - type: conv
+    shape: [32, 6, 6, 16]
+
+  - type: batchnorm
+    shape: [20, 20, 32]
+
+  - type: relu
+
+  - type: maxpool
+    size: 2
+
+  - type: transform
+    input_shape: [-1, 10, 10, 32]
+    output_shape: [-1, 3200]
+
+  - type: linear
+    shape: [3200, 128]
+
+  - type: batchnorm
+    shape: [10, 128]
+
+  - type: relu
+
+  - type: dropout
+    drop_rate: 0.8
+
+  - type: linear
+    shape: [128, 5]
+
+  - type: batchnorm
+    shape: [10, 5]
+
+  - type: relu
+
+test_layers:
+  - type: batchnorm
+    shape: [10, 224, 224, 3]
+    affine: False
+
+  - type: conv
+    shape: [8, 9, 9, 3]
+
+  - type: batchnorm
+    shape: [216, 216, 8]
+
+  - type: relu
+
+  - type: maxpool
+    size: 4
+
+  - type: conv
+    shape: [16, 5, 5, 8]
+
+  - type: batchnorm
+    shape: [50, 50, 16]
+
+  - type: relu
+
+  - type: maxpool
+    size: 2
+
+  - type: conv
+    shape: [32, 6, 6, 16]
+
+  - type: batchnorm
+    shape: [20, 20, 32]
+
+  - type: relu
+
+  - type: maxpool
+    size: 2
+
+  - type: transform
+    input_shape: [-1, 10, 10, 32]
+    output_shape: [-1, 3200]
+
+  - type: linear
+    shape: [3200, 128]
+
+  - type: batchnorm
+    shape: [10, 128]
+
+  - type: relu
+
+  - type: dropout
+    drop_rate: 0.8
+    is_test: True
+
+  - type: linear
+    shape: [128, 5]
+
+  - type: batchnorm
+    shape: [10, 5]
+
+  - type: relu

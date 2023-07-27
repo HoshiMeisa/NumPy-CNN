@@ -34,14 +34,12 @@ class Softmax(Layer):
         """
         x.shape = (N, C)
         Receive batch input, where each input is a one-dimensional vector
-        batch入力を受け取り、各入力が一次元ベクトルであることを確認します
         """
         v = np.exp(x)
         return v / v.sum(axis=-1, keepdims=True)
     
     def backward(self, y):
         # The backpropagation of Softmax is in the cross-entropy loss function.
-        # Softmaxの逆伝搬は、クロスエントロピー損失関数にあります。
         pass
 
 

@@ -9,10 +9,6 @@ class Linear(Layer):
         Parameters: shape -- (in_size, out_size)
                     requires_grad -- Whether to compute weight gradient during backpropagation
                     bias -- Whether to set bias
-
-        パラメータ：shape -- (in_size, out_size)
-                  requires_grad -- 逆伝播時に重み勾配を計算するかどうか
-                  bias -- バイアスを設定するかどうか
         """
         self.x = None
 
@@ -32,7 +28,6 @@ class Linear(Layer):
 
     def backward(self, eta):
         # Matrix multiplication involving transpose is involved in backpropagation
-        # 逆伝播において転置を伴う行列の乗算が含まれます
         if self.require_grad:
             batch_size = eta.shape[0]
             # dW_{ik}=\frac {1}{N} \sum_{j}^{C} x_{ji} da_{jk}

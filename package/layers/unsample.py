@@ -2,8 +2,6 @@ from .layer import Layer
 import numpy as np
 
 # Upsampling layer, duplicates and expands data
-# アップサンプリング層、データを複製および拡張します
-
 class Unsample(Layer):
     def __init__(self, scale, **kwargs):
         self.backward_path = None
@@ -18,7 +16,6 @@ class Unsample(Layer):
         eta = eta.reshape(N, H//self.sacle, self.sacle, W//self.sacle, self.sacle, C)
         if self.first_backward:
             # Calculate optimization path during first training
-            # 最初のトレーニング時に最適化パスを計算します
             self.first_backward = False
             self.backward_path = np.einsum_path('ijklmn->ijln', eta, optimize='greedy')[0]
         return np.einsum('ijklmn->ijln', eta, optimize=True)

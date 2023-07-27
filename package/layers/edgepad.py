@@ -5,8 +5,6 @@ import numpy as np
 # Padding is applied to the data using the values of boundary elements, and the padding only occurs in the
 # width (W) and height (H) dimensions
 
-# 境界要素の値を使ってデータにパディングを適用し、パディングは幅（W）と高さ（H）の次元にのみ発生します
-
 class EdgePad(Layer):
     def __init__(self, pad_width, **kwargs):
         # pad_width: Padding width
